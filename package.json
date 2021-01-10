@@ -35,10 +35,10 @@
     "mongoose": "^5.5.11",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "validator": "^13.1.17"
+    "validator": "^13.1.17",    
+    "chalk": "^2.4.2"
   },
   "devDependencies": {
-    "chalk": "^2.4.2",
     "cross-env": "^5.2.0",
     "dotenv-webpack": "^1.8.0",
     "nodemon": "^1.19.1"
