@@ -42,12 +42,14 @@ This application is deployed on Heroku.
   * host : https://books-library-project.herokuapp.com
   * authBearerToken : (when you signup or signin, you will get token put that token as variable value)
 
-4. First Scenario (No Authentication Required) :
+4. Please set header `Content-Type : application/json` for all the api request.
+
+5. First Scenario (No Authentication Required) :
   * https://books-library-project.herokuapp.com/api/web/book/list (you will see empty library).
   * https://books-library-project.herokuapp.com/api/web/book/add (to add books to library, add atleast 4 - 5 books)
   * https://books-library-project.herokuapp.com/api/web/book/list (to see added books in library)
 
-5. Second Scenario (Authentication Required) : 
+6. Second Scenario (Authentication Required) : 
   * https://books-library-project.herokuapp.com/api/web/account/signup (to signup for application, you will receive token here, put that token in `authBearerToken` environment variable)
   * https://books-library-project.herokuapp.com/api/web/account/signin (to signin to the application, you will receive token here, put that token in `authBearerToken` environment variable)
   * https://books-library-project.herokuapp.com/api/web/book/buy (to buy books from library, you can buy upto two books)
