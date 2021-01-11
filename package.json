@@ -13,11 +13,7 @@
   "keywords": [
     "node",
     "express",
-    "mongoose",
-    "react",
-    "redux",
-    "redux-thunk",
-    "webpack"
+    "mongoose"
   ],
   "author": "Livian Shrawnia (https://github.com/livianshrawnia)",
   "license": "ISC",
