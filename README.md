@@ -32,7 +32,8 @@ An Books Library System built with NodeJs, ExpressJs, Mongoose and MongoDB. This
 
 ## Demo
 
-This application is deployed on Heroku. 
+This application is deployed on Heroku.
+`NOTE : Please use the latest desktop application for Postman (reason : Older version of postman lacks 'Bearer Token' authorization header )`
 
 1. Please import api collection in Postman App from this link : (https://www.getpostman.com/collections/b01ede33d5c3d93720bb).
 
@@ -54,7 +55,7 @@ This application is deployed on Heroku.
   * https://books-library-project.herokuapp.com/api/web/account/signin (to signin to the application, you will receive token here, put that token in `authBearerToken` environment variable)
   * https://books-library-project.herokuapp.com/api/web/book/buy (to buy books from library, you can buy upto two books)
   * https://books-library-project.herokuapp.com/api/web/book/buy/list (to view the books brought by user, as well as check https://books-library-project.herokuapp.com/api/web/book/list api to confirm, books that user brought are removed from the library)
-  * `NOTE` : Please go through sll steps in sequential order for best result. 
+  * `NOTE` : Please go through all steps in sequential order for best result. 
 
 
 ## Install
