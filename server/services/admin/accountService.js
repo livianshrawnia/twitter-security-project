@@ -86,7 +86,6 @@ exports.signup = async (name, email, username, password) => {
       };
       const token = await jwt.sign(payload, secret, { expiresIn: tokenLife });
 
-      json.result.user = result;
       json.result.token = token;
       json.error = false;
       json.message = 'Success.';
@@ -146,7 +145,6 @@ exports.signin = async (email, password) => {
       const token = await jwt.sign(payload, secret, { expiresIn: tokenLife });
 
       json.result.token = token;
-      json.result.user = user;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;

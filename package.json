@@ -1,26 +1,27 @@
 {
-  "name": "books-library-project",
+  "name": "twitter-security-project",
   "version": "1.0.0",
-  "description": "books-library-project",
+  "description": "twitter-security-project",
   "main": "server/index.js",
   "scripts": {
     "start": "node server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/livianshrawnia/books-library-project.git"
+    "url": "git+https://github.com/livianshrawnia/twitter-security-project.git"
   },
   "keywords": [
     "node",
     "express",
-    "mongoose"
+    "mongoose",
+    "mongodb"
   ],
   "author": "Livian Shrawnia (https://github.com/livianshrawnia)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/livianshrawnia/books-library-project/issues"
+    "url": "https://github.com/livianshrawnia/twitter-security-project/issues"
   },
-  "homepage": "https://github.com/livianshrawnia/books-library-project#readme",
+  "homepage": "https://github.com/livianshrawnia/twitter-security-project#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

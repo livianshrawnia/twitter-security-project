@@ -3,19 +3,22 @@ const router = express.Router();
 
 // Bring in Models & Helpers
 const auth = require('../../middleware/auth');
+const role = require('../../middleware/role');
 
-const { bookAddServlet } = require('../../servlet/website/bookAddServlet');
-const { bookListServlet } = require('../../servlet/website/bookListServlet');
-const { bookBuyServlet } = require('../../servlet/website/bookBuyServlet');
-const { bookBuyListServlet } = require('../../servlet/website/bookBuyListServlet');
+//const { postAddServlet } = require('../../servlet/website/postAddServlet');
+//const { postListServlet } = require('../../servlet/website/postListServlet');
+const { postAddServlet } = require('../../servlet/website/postAddServlet');
+const { postDeleteServlet } = require('../../servlet/website/postDeleteServlet');
+const { postListServlet } = require('../../servlet/website/postListServlet');
 const { accountSignupServlet } = require('../../servlet/website/accountSignupServlet');
 const { accountSigninServlet } = require('../../servlet/website/accountSigninServlet');
 
-// Books Routes
-router.post('/book/add', bookAddServlet);
-router.get('/book/list', bookListServlet);
-router.post('/book/buy', auth, bookBuyServlet);
-router.get('/book/buy/list', auth, bookBuyListServlet);
+// Posts Routes
+//router.post('/post/add', postAddServlet);
+//router.get('/post/list', postListServlet);
+router.post('/post/add', auth, role.checkRole(role.ROLES.User), postAddServlet);
+router.delete('/post/delete/:postId', auth, role.checkRole(role.ROLES.User), postDeleteServlet);
+router.get('/post/list', auth, role.checkRole(role.ROLES.User), postListServlet);
 
 // Account Routes
 router.post('/account/signup', accountSignupServlet);

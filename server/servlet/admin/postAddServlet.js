@@ -1,15 +1,14 @@
-const accountService = require('../../services/website/accountService');
+const postService = require('../../services/admin/postService');
 const { getHttpStatusCode } = require('../../helpers/httpStatus');
 const { httpErrorCode } = require('../../../constant');
 const { string } = require('../../helpers/dataType');
 
-exports.accountSignupServlet = async (req, res) => {
+exports.postAddServlet = async (req, res) => {
   const { body } = req;
-  const name = string(body.name);
-  const email = string(body.email);
-  const username = string(body.username);
-  const password = string(body.password);
-  const json = await accountService.signup(name, email, username, password);    
+  const username = string(body.username);  
+  const content = string(body.content);  
+  const user = req.user._id;
+  const json = await postService.add(user, username, content);    
     if(json.code !== httpErrorCode.SUCCESS){
       return res.status(getHttpStatusCode(json.code)).json(json);
     }else{

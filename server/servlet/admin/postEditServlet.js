@@ -1,13 +1,15 @@
-const bookService = require('../../services/website/bookService');
+const postService = require('../../services/admin/postService');
 const { getHttpStatusCode } = require('../../helpers/httpStatus');
 const { httpErrorCode } = require('../../../constant');
 const { string } = require('../../helpers/dataType');
 
-exports.bookBuyServlet = async (req, res) => {
+exports.postEditServlet = async (req, res) => {
   const { body } = req;
-  const bookId = string(body.bookId);  
+  const postId = string(req.params.postId);  
+  const username = string(body.username);  
+  const content = string(body.content);  
   const user = req.user._id;
-  const json = await bookService.buy(user, bookId);    
+  const json = await postService.edit(user, username, postId, content);    
     if(json.code !== httpErrorCode.SUCCESS){
       return res.status(getHttpStatusCode(json.code)).json(json);
     }else{

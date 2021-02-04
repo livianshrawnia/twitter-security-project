@@ -1,5 +1,4 @@
 const Mongoose = require('mongoose');
-const { BookSchemaFormation } = require('./formation/book');
 
 const { Schema } = Mongoose;
 
@@ -8,6 +7,14 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
+    trim: true
+  },
+  username: {
+    type: String,
+    required: true,
+    minlength: 3,
+    unique: true,
     trim: true
   },
   name: {
@@ -21,7 +28,17 @@ const UserSchema = new Schema({
     minLength: 8,
     trim: true
   },
-  books : [BookSchemaFormation],
+  role: {
+    type: String,
+    default: 'ROLE_USER',
+    enum: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN']
+  },
+  updatedBy : {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
+},{
+  timestamps : true
 });
 
 module.exports = Mongoose.model('User', UserSchema);
