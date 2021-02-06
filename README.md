@@ -2,7 +2,7 @@
 
 ## Description
 
-An Twitter Security System built with NodeJs, ExpressJs, Mongoose and MongoDB. This application enable six main different flows or implementations:
+An Twitter Security System built with NodeJs, ExpressJs, Mongoose and MongoDB. This application enable eight main different flows or implementations:
 
 1. Signup for the application.
 2. Signin in the application.
