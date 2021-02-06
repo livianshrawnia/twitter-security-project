@@ -35,6 +35,14 @@ This application is deployed on Heroku.
   * host : https://twitter-security-project.herokuapp.com
   * authBearerToken : (when you signup or signin, you will get token put that token as variable value)
 4. Please set header `Content-Type : application/json` for all the api request.
+5. I have created 3 users with roles.
+
+     Email                  |        Password
+  user@gmail.com            |     user@123     
+  admin@gmail.com           |     admin@123
+  superadmin@gmail.com      |     superadmin@gmail.com  
+
+6. Sign in with above details u will receive token, put that token in variable called `authBearerToken` that you already created.
 
 
 ## Api's endpoints
