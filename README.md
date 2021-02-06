@@ -1,15 +1,19 @@
-# BOOKS LIBRARY PROJECT
+# TWITTER SECURITY PROJECT
 
 ## Description
 
-An Books Library System built with NodeJs, ExpressJs, Mongoose and MongoDB. This application enable six main different flows or implementations:
+An Twitter Security System built with NodeJs, ExpressJs, Mongoose and MongoDB. This application enable six main different flows or implementations:
 
-1. Add books to the library.
-2. View books in the library.
-3. Signup for the application.
-4. Signin in the application.
-5. User can buy upto 2 books from library.
-6. User can view books that he/she brought from the library.
+1. Signup for the application.
+2. Signin in the application.
+3. User can create, delete and list own post.
+4. Admin can initiate CRUD of tweets on users behalf.
+5. Admin can edit user details.
+6. Super-admin can approve actions initiated by admin.
+7. Super-admin can view access/action/audit logs.
+8. Super-admin can write custom queries to generate insights
+    - Post frequency of user X within a timeframe
+    - Number of changes requested by Admin Y
 
 
 ## Features:
@@ -20,42 +24,37 @@ An Books Library System built with NodeJs, ExpressJs, Mongoose and MongoDB. This
   * JSON Web Token (JWT) for authentication.
 
 
-## Api's endpoints
-
-1. https://books-library-project.herokuapp.com/api/web/book/list 
-2. https://books-library-project.herokuapp.com/api/web/book/add
-3. https://books-library-project.herokuapp.com/api/web/account/signup
-4. https://books-library-project.herokuapp.com/api/web/account/signin
-5. https://books-library-project.herokuapp.com/api/web/book/buy         (Authentication Required)
-6. https://books-library-project.herokuapp.com/api/web/book/buy/list    (Authentication Required)
-
-
 ## Demo
 
 This application is deployed on Heroku.
 `NOTE : Please use the latest desktop application for Postman (reason : Older version of postman lacks 'Bearer Token' authorization header )`
 
-1. Please import api collection in Postman App from this link : (https://www.getpostman.com/collections/b01ede33d5c3d93720bb).
-
+1. Please import api collection in Postman App from this link : (https://www.getpostman.com/collections/fbe8f5f9576c21f519dd).
 2. Create Environment in Postman App and name it PRODUCTION (you can name it anything as you like).
-
 3. Create Environment variables :
-  * host : https://books-library-project.herokuapp.com
+  * host : https://twitter-security-project.herokuapp.com
   * authBearerToken : (when you signup or signin, you will get token put that token as variable value)
-
 4. Please set header `Content-Type : application/json` for all the api request.
 
-5. First Scenario (No Authentication Required) :
-  * https://books-library-project.herokuapp.com/api/web/book/list (you will see empty library).
-  * https://books-library-project.herokuapp.com/api/web/book/add (to add books to library, add atleast 4 - 5 books)
-  * https://books-library-project.herokuapp.com/api/web/book/list (to see added books in library)
 
-6. Second Scenario (Authentication Required) : 
-  * https://books-library-project.herokuapp.com/api/web/account/signup (to signup for application, you will receive token here, put that token in `authBearerToken` environment variable)
-  * https://books-library-project.herokuapp.com/api/web/account/signin (to signin to the application, you will receive token here, put that token in `authBearerToken` environment variable)
-  * https://books-library-project.herokuapp.com/api/web/book/buy (to buy books from library, you can buy upto two books)
-  * https://books-library-project.herokuapp.com/api/web/book/buy/list (to view the books brought by user, as well as check https://books-library-project.herokuapp.com/api/web/book/list api to confirm, books that user brought are removed from the library)
-  * `NOTE` : Please go through all steps in sequential order for best result. 
+## Api's endpoints
+
+1. https://twitter-security-project.herokuapp.com/api/web/account/signup
+2. https://twitter-security-project.herokuapp.com/api/web/account/signin
+3. https://twitter-security-project.herokuapp.com/api/web/post/add         (Authentication Required)
+4. https://twitter-security-project.herokuapp.com/api/web/post/delete/         (Authentication Required)
+5. https://twitter-security-project.herokuapp.com/api/web/post/list         (Authentication Required)
+
+6. https://twitter-security-project.herokuapp.com/api/admin/user/edit/         (Authentication Required)
+7. https://twitter-security-project.herokuapp.com/api/admin/post/add         (Authentication Required)
+8. https://twitter-security-project.herokuapp.com/api/admin/post/edit/         (Authentication Required)
+9. https://twitter-security-project.herokuapp.com/api/admin/post/delete/         (Authentication Required)
+10. https://twitter-security-project.herokuapp.com/api/admin/post/get/         (Authentication Required)
+
+11. https://twitter-security-project.herokuapp.com/api/super-admin/log/list         (Authentication Required)
+12. https://twitter-security-project.herokuapp.com/api/super-admin/insight/generate         (Authentication Required)
+13. https://twitter-security-project.herokuapp.com/api/super-admin/request/approve/         (Authentication Required)
+  * `NOTE` : Please go through all api's in sequential order for best result. 
 
 
 ## Install
@@ -63,7 +62,7 @@ This application is deployed on Heroku.
 Some basic Git commands are:
 
 ```
-$ git clone https://github.com/livianshrawnia/books-library-project.git
+$ git clone https://github.com/livianshrawnia/twitter-security-project.git
 $ cd project
 $ npm install
 ```
