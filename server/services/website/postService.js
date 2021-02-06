@@ -1,7 +1,7 @@
 const Post = require('../../models/post');
-const User = require('../../models/user');
+const Log = require('../../models/log');
 const validator = require('validator');
-const { httpErrorCode } = require('../../../constant');
+const { httpErrorCode, logType } = require('../../../constant');
 
 /**
  *
@@ -28,12 +28,25 @@ exports.add = async (user, content) => {
 
       const post = new Post({
         content,
-        createdBy : user
+        createdBy : user.id
       });
 
-      const result = await post.save();
+      const resultPost = await post.save();
+      if (!resultPost) {
+        json.error = true;
+        json.message = 'Error saving tweet. Please try again.';
+        json.code = httpErrorCode.USER_ERROR;
+        return json;
+      }
 
-      json.result.post = result;
+      const log = new Log({
+        type : logType.ACTION,
+        content : `User ${user.username} twitted.`,
+        createdBy : user.id
+      });
+      log.save();
+
+      json.result.post = resultPost;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;
@@ -64,15 +77,22 @@ exports.delete = async (user, postId) => {
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
-      const result = await Post.findOneAndDelete({createdBy : user, _id : postId});
-      if (!result) {
+      const post = await Post.findOneAndDelete({createdBy : user.id, _id : postId});
+      if (!post) {
         json.error = true;
         json.message = 'Invalid postId.';
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
+      
+      const log = new Log({
+        type : logType.AUDIT,
+        content : `User ${user.username} deleted tweet.`,
+        createdBy : user.id
+      });
+      log.save();
 
-      json.result.post = result;
+      json.result.post = post;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;
@@ -96,23 +116,11 @@ exports.delete = async (user, postId) => {
   
     try{ 
       const query = {
-        createdBy : user,
-        createRequest : false,
-        updateRequest : false,
-        deleteRequest : false
+        createdBy : user.id
       };
-      const projection = {content: 1, createdAt: 1, updatedAt: 1};
-      const result = await Post.find(query, projection).sort({_id : -1});
+      const posts = await Post.find(query).sort({_id : -1});
 
-      if (!result) {
-        json.result.posts = [];
-        json.error = false;
-        json.message = 'Success.';
-        json.code = httpErrorCode.SUCCESS;
-        return json;
-      }
-
-      json.result = result;
+      json.result.posts = posts;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;

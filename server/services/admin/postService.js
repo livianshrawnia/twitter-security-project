@@ -1,7 +1,9 @@
 const Post = require('../../models/post');
+const Log = require('../../models/log');
 const User = require('../../models/user');
+const Request = require('../../models/request');
 const validator = require('validator');
-const { httpErrorCode } = require('../../../constant');
+const { httpErrorCode, logType, requestType } = require('../../../constant');
 
 /**
  *
@@ -38,24 +40,33 @@ exports.add = async (user, username, content) => {
         json.message = 'Username does not exists.';
         json.code = httpErrorCode.USER_ERROR;
         return json;
-      }
+      }      
 
-      const post = new Post({
-        content,
-        createdBy : resultUser.id,
-        createRequest: true,
-        createRequestBy : user
+      const request = Request({
+        post : {
+          content,
+          createdBy : resultUser.id
+        },
+        type : requestType.CREATE,
+        requestedBy : user.id        
       });
 
-      const result = await post.save();
+      const result = await request.save();
       if (!result) {
         json.error = true;
-        json.message = 'Error saving post.';
+        json.message = 'Error saving request.';
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
 
-      json.result.post = result;
+      const log = new Log({
+        type : logType.ACTION,
+        content : `Admin ${user.username} requested to tweet on behalf of user ${resultUser.username}.`,
+        createdBy : user.id
+      });
+      log.save();
+
+      json.result = result;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;
@@ -107,26 +118,43 @@ exports.edit = async (user, username, postId, content) => {
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
-
-      const result = await Post.findOneAndUpdate({
-        _id : postId,
-        createdBy : resultUser.id
-      },{
-        content,
-        updatedBy : resultUser.id,
-        updateRequest: true,
-        updateRequestBy : user
-      },{
-        new : true
+      const resultPost = await Post.findOne({
+        createdBy : resultUser.id,
+        _id : postId
       });
-      if (!result) {
+      if (!resultPost) {
         json.error = true;
-        json.message = 'Invalid postId.';
+        json.message = 'Post does not belong to user.';
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
 
-      json.result.post = result;
+      const request = Request({
+        post : {
+          id : postId,
+          content,
+          createdBy : resultUser.id
+        },
+        type : requestType.UPDATE,
+        requestedBy : user.id        
+      });
+
+      const result = await request.save();
+      if (!result) {
+        json.error = true;
+        json.message = 'Error saving request.';
+        json.code = httpErrorCode.USER_ERROR;
+        return json;
+      }
+
+      const log = new Log({
+        type : logType.ACTION,
+        content : `Admin ${user.username} requested to edit tweet on behalf of user ${resultUser.username}.`,
+        createdBy : user.id
+      });
+      log.save();
+
+      json.result = result;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;
@@ -171,24 +199,41 @@ exports.delete = async (user, postId, username) => {
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
-      const result = await Post.findOneAndUpdate(
-        { 
-          _id : postId
-        },{
-          deletedBy : resultUser.id,
-          deleteRequest: true,
-          deleteRequestBy : user
-        },{
-          new: true
-        });
-      if (!result) {
+      const resultPost = await Post.findOne({
+        createdBy : resultUser.id,
+        _id : postId
+      });
+      if (!resultPost) {
         json.error = true;
-        json.message = 'Invalid postId.';
+        json.message = 'Post does not belong to user.';
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
 
-      json.result.post = result;
+      const request = Request({
+        post : {
+          id : postId
+        },
+        type : requestType.DELETE,
+        requestedBy : user.id        
+      });
+
+      const result = await request.save();
+      if (!result) {
+        json.error = true;
+        json.message = 'Error saving request.';
+        json.code = httpErrorCode.USER_ERROR;
+        return json;
+      }
+
+      const log = new Log({
+        type : logType.ACTION,
+        content : `Admin ${user.username} requested to delete tweet on behalf of user ${resultUser.username}.`,
+        createdBy : user.id
+      });
+      log.save();
+
+      json.result = result;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;

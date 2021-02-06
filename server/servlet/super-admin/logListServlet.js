@@ -1,13 +1,10 @@
-const bookService = require('../../services/website/bookService');
+const logService = require('../../services/super-admin/logService');
 const { getHttpStatusCode } = require('../../helpers/httpStatus');
 const { httpErrorCode } = require('../../../constant');
 const { string } = require('../../helpers/dataType');
 
-exports.bookAddServlet = async (req, res) => {
-  const { body } = req;
-  const name = string(body.name);
-  const author = string(body.author);
-  const json = await bookService.add(name, author);    
+exports.logListServlet = async (req, res) => {
+  const json = await logService.list();    
     if(json.code !== httpErrorCode.SUCCESS){
       return res.status(getHttpStatusCode(json.code)).json(json);
     }else{

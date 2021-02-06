@@ -13,5 +13,16 @@ module.exports = {
         SUCCESS : 'SUCCESS',
         USER_ERROR : 'USER_ERROR',
         SERVER_ERROR : 'SERVER_ERROR'
+    },
+    logType : {
+        ACTION : 'action',
+        ACCESS : 'access',
+        AUDIT : 'audit'
+    },
+    requestType : {
+        CREATE : 'create',
+        READ : 'read',
+        UPDATE : 'update',
+        DELETE : 'delete'
     }
 }

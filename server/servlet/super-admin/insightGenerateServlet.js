@@ -1,14 +1,15 @@
-const postService = require('../../services/admin/postService');
+const insightService = require('../../services/super-admin/insightService');
 const { getHttpStatusCode } = require('../../helpers/httpStatus');
 const { httpErrorCode } = require('../../../constant');
 const { string } = require('../../helpers/dataType');
 
-exports.postAddServlet = async (req, res) => {
+exports.insightGenerateServlet = async (req, res) => {
   const { body } = req;
+  const collectionName = string(body.collectionName);  
   const username = string(body.username);  
-  const content = string(body.content);  
-  const user = req.user;
-  const json = await postService.add(user, username, content);    
+  const startDate = string(body.startDate);  
+  const endDate = string(body.endDate);  
+  const json = await insightService.generate(collectionName, username, startDate, endDate);    
     if(json.code !== httpErrorCode.SUCCESS){
       return res.status(getHttpStatusCode(json.code)).json(json);
     }else{

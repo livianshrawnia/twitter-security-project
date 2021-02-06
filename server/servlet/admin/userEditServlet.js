@@ -5,7 +5,7 @@ const { string } = require('../../helpers/dataType');
 
 exports.userEditServlet = async (req, res) => {
   const { body } = req;
-  const user = req.user._id;
+  const user = req.user;
   const userId = string(req.params.userId); 
   const email = string(body.email);  
   const username = string(body.username);  

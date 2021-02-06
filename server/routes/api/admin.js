@@ -19,5 +19,4 @@ router.put('/post/edit/:postId', auth, role.checkRole(role.ROLES.Admin), postEdi
 router.delete('/post/delete/:postId', auth, role.checkRole(role.ROLES.Admin), postDeleteServlet);
 router.get('/post/get/:postId', auth, role.checkRole(role.ROLES.Admin), postGetServlet);
 
-
 module.exports = router;

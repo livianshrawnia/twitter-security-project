@@ -1,8 +1,9 @@
-const Post = require('../../models/post');
+const Log = require('../../models/log');
 const User = require('../../models/user');
+const Request = require('../../models/request');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const { httpErrorCode } = require('../../../constant');
+const { httpErrorCode, logType, requestType } = require('../../../constant');
 
 /**
  *
@@ -24,7 +25,13 @@ exports.edit = async (user, userId, email, username, name, password, role) => {
   json.result = {};
   
     try{ 
-      
+      const resultFindUserById = await User.findOne({_id : userId});
+      if (!resultFindUserById) {
+        json.error = true;
+        json.message = 'User doesn\'t exists.';
+        json.code = httpErrorCode.USER_ERROR;
+        return json;
+      }
       if (validator.isEmpty(email)) {
         json.error = true;
         json.message = 'Please enter email address.';
@@ -37,6 +44,13 @@ exports.edit = async (user, userId, email, username, name, password, role) => {
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
+      const resultFindUserByEmail = await User.findOne({email});
+      if (resultFindUserByEmail) {
+        json.error = true;
+        json.message = 'Email address is already in use.';
+        json.code = httpErrorCode.USER_ERROR;
+        return json;
+      }
       if (validator.isEmpty(username)) {
         json.error = true;
         json.message = 'You must enter a username.';
@@ -46,6 +60,13 @@ exports.edit = async (user, userId, email, username, name, password, role) => {
       if (!validator.isLength(username, {min : 3})) {
         json.error = true;
         json.message = 'Username must be at least 3 characters long.';
+        json.code = httpErrorCode.USER_ERROR;
+        return json;
+      }
+      const resultFindUserByUsername = await User.findOne({username});
+      if (resultFindUserByUsername) {
+        json.error = true;
+        json.message = 'Username is already in use.';
         json.code = httpErrorCode.USER_ERROR;
         return json;
       }
@@ -77,25 +98,37 @@ exports.edit = async (user, userId, email, username, name, password, role) => {
       const hashedPassword = await bcrypt.hash(password, salt);
       password = hashedPassword;
     
-      const query = { _id: userId };
-      const update = {
-        email,
-        username,
-        name,
-        password,
-        role,
-        updatedBy : user
-      };
+      const request = Request({
+        user : {
+          id : userId,
+          email,
+          username,
+          name,
+          password,
+          role
+        },
+        isUser : true,
+        type : requestType.UPDATE,
+        requestedBy : user.id        
+      });
 
-      const result = await User.findOneAndUpdate(query,update,{ new: true });
+      const result = await request.save();
       if(!result){
         json.error = true;
-        json.message = 'Error updating user.';
+        json.message = 'Error saving request.';
         logger.emerg(JSON.stringify(json.message));
         json.code = httpErrorCode.SERVER_ERROR;
         return json;      
       }
-      json.result.user = result;
+
+      const log = new Log({
+        type : logType.ACTION,
+        content : `Admin ${user.username} requested to edit user ${username}.`,
+        createdBy : user.id
+      });
+      log.save();
+
+      json.result = result;
       json.error = false;
       json.message = 'Success.';
       json.code = httpErrorCode.SUCCESS;

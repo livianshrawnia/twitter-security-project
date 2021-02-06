@@ -5,8 +5,6 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const role = require('../../middleware/role');
 
-//const { postAddServlet } = require('../../servlet/website/postAddServlet');
-//const { postListServlet } = require('../../servlet/website/postListServlet');
 const { postAddServlet } = require('../../servlet/website/postAddServlet');
 const { postDeleteServlet } = require('../../servlet/website/postDeleteServlet');
 const { postListServlet } = require('../../servlet/website/postListServlet');
@@ -14,8 +12,6 @@ const { accountSignupServlet } = require('../../servlet/website/accountSignupSer
 const { accountSigninServlet } = require('../../servlet/website/accountSigninServlet');
 
 // Posts Routes
-//router.post('/post/add', postAddServlet);
-//router.get('/post/list', postListServlet);
 router.post('/post/add', auth, role.checkRole(role.ROLES.User), postAddServlet);
 router.delete('/post/delete/:postId', auth, role.checkRole(role.ROLES.User), postDeleteServlet);
 router.get('/post/list', auth, role.checkRole(role.ROLES.User), postListServlet);

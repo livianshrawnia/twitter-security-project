@@ -1,8 +1,9 @@
 const User = require('../../models/user');
+const Log = require('../../models/log');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { httpErrorCode } = require('../../../constant');
+const { httpErrorCode, logType } = require('../../../constant');
 const keys = require('../../config/keys');
 const { secret, tokenLife } = keys.jwt;
 
@@ -80,11 +81,24 @@ exports.signup = async (name, email, username, password) => {
       });
 
       const result = await user.save();
+      if (!result) {
+        json.error = true;
+        json.message = 'Error saving user. Please try again.';
+        json.code = httpErrorCode.USER_ERROR;
+        return json;
+      }            
 
       const payload = {
         id: result._id
       };
       const token = await jwt.sign(payload, secret, { expiresIn: tokenLife });
+
+      const log = new Log({
+        type : logType.ACCESS,
+        content : `User ${result.username} signs up.`,
+        createdBy : result.id
+      });
+      log.save();
 
       json.result.user = result;
       json.result.token = token;
@@ -144,6 +158,13 @@ exports.signin = async (email, password) => {
         id: user._id
       };
       const token = await jwt.sign(payload, secret, { expiresIn: tokenLife });
+
+      const log = new Log({
+        type : logType.ACCESS,
+        content : `User ${user.username} sign in.`,
+        createdBy : user.id
+      });
+      log.save();
 
       json.result.token = token;
       json.result.user = user;

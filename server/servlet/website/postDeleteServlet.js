@@ -6,7 +6,7 @@ const { string } = require('../../helpers/dataType');
 exports.postDeleteServlet = async (req, res) => {
   const { body } = req;
   const postId = string(req.params.postId);  
-  const user = req.user._id;
+  const user = req.user;
   const json = await postService.delete(user, postId);    
     if(json.code !== httpErrorCode.SUCCESS){
       return res.status(getHttpStatusCode(json.code)).json(json);

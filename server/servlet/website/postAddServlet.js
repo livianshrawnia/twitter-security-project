@@ -6,7 +6,7 @@ const { string } = require('../../helpers/dataType');
 exports.postAddServlet = async (req, res) => {
   const { body } = req;
   const content = string(body.content);  
-  const user = req.user._id;
+  const user = req.user;
   const json = await postService.add(user, content);    
     if(json.code !== httpErrorCode.SUCCESS){
       return res.status(getHttpStatusCode(json.code)).json(json);
