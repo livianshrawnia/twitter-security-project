@@ -13,7 +13,7 @@ package-lock.json
 .vscode
 
 # environment file
-/.env
+.env
 
 # debug
 npm-debug.log*
