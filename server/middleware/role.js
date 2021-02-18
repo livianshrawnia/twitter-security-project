@@ -1,4 +1,4 @@
-const { httpStatusCode } = require("../../constant");
+const { httpStatusCode, httpErrorCode } = require("../../constant");
 
 const ROLES = {
   User: 'ROLE_USER',
@@ -9,13 +9,21 @@ const ROLES = {
 const checkRole = (...roles) => (req, res, next) => {
   let json;
   if (!req.user) {
-    json = { error : true, message : 'Unauthorized'}
+    json = { 
+      error : true, 
+      message : 'Unauthorized.',
+      code : httpErrorCode.USER_ERROR
+    }
     return res.status(httpStatusCode.UNAUTHORIZED).json(json);
   }
 
   const hasRole = roles.find(role => req.user.role === role);
   if (!hasRole) {
-    json = { error : true, message : 'You are not allowed to make this request.'}
+    json = { 
+      error : true, 
+      message : 'You are not allowed to make this request.',
+      code : httpErrorCode.USER_ERROR
+    }
     return res.status(httpStatusCode.FORBIDDEN).json(json);
   }
 

@@ -24,6 +24,7 @@
   "homepage": "https://github.com/livianshrawnia/twitter-security-project#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chalk": "^2.4.2",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.0.0",
@@ -32,8 +33,7 @@
     "mongoose": "^5.5.11",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "validator": "^13.1.17",    
-    "chalk": "^2.4.2"
+    "validator": "^13.1.17"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
